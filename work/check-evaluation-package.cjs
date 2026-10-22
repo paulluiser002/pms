@@ -1,0 +1,4 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+for(const name of fs.readdirSync('performance/dist').filter(n=>n.endsWith('.js'))){const source=fs.readFileSync('performance/dist/'+name,'utf8');new vm.Script(source,{filename:name});assert.equal(source,fs.readFileSync('outputs/'+name,'utf8'));}
+const html=fs.readFileSync('outputs/performance-mvp.html','utf8');const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];assert.equal(scripts.length,10);scripts.forEach((s,i)=>new vm.Script(s[1],{filename:'inline-'+i}));assert(!html.includes('src="evaluations.js"'));assert(html.includes('Sequential Assessments'));assert(html.includes('Goals Templates'));assert(html.includes('202 Files'));
+console.log('PASS: ten inline scripts compile, standalone includes the evaluation capabilities, and supporting JavaScript copies match.');

@@ -17,7 +17,19 @@ $html=$html.Replace('<link rel="stylesheet" href="reviews.css">',('<style>'+$rev
 $html=$html.Replace('<link rel="stylesheet" href="revisions.css">',('<style>'+$revisionCss+'</style>')).Replace('<script src="revisions.js"></script>',('<script>'+$revisionJs+'</script>'))
 $html=$html.Replace('<link rel="stylesheet" href="tables.css">',('<style>'+$tableCss+'</style>')).Replace('<script src="tables.js"></script>',('<script>'+$tableJs+'</script>'))
 $html=$html.Replace('<link rel="stylesheet" href="dashboard.css">',('<style>'+$dashboardCss+'</style>')).Replace('<script src="dashboard.js"></script>',('<script>'+$dashboardJs+'</script>'))
+$evaluationCss=Get-Content performance/dist/evaluations.css -Raw
+$evaluationJs=Get-Content performance/dist/evaluations.js -Raw
+$html=$html.Replace('<link rel="stylesheet" href="evaluations.css">',('<style>'+$evaluationCss+'</style>')).Replace('<script src="evaluations.js"></script>',('<script>'+$evaluationJs+'</script>'))
 $html=$html.Replace('<link rel="stylesheet" href="shell.css">',('<style>'+$shellCss+'</style>')).Replace('<script src="shell.js"></script>',('<script>'+$shellJs+'</script>'))
-Set-Content outputs/performance-mvp.html $html -Encoding utf8
+$workflowCss=Get-Content performance/dist/cycle-workflow.css -Raw
+$workflowJs=Get-Content performance/dist/cycle-workflow.js -Raw
+$html=$html.Replace('<link rel="stylesheet" href="cycle-workflow.css">',('<style>'+$workflowCss+'</style>')).Replace('<script src="cycle-workflow.js"></script>',('<script>'+$workflowJs+'</script>'))
+$resultsCss=Get-Content performance/dist/evaluation-results.css -Raw
+$resultsJs=Get-Content performance/dist/evaluation-results.js -Raw
+$html=$html.Replace('<link rel="stylesheet" href="evaluation-results.css">',('<style>'+$resultsCss+'</style>')).Replace('<script src="evaluation-results.js"></script>',('<script>'+$resultsJs+'</script>'))
+$positionCss=Get-Content performance/dist/position-goals.css -Raw
+$positionJs=Get-Content performance/dist/position-goals.js -Raw
+$html=$html.Replace('<link rel="stylesheet" href="position-goals.css">',('<style>'+$positionCss+'</style>')).Replace('<script src="position-goals.js"></script>',('<script>'+$positionJs+'</script>'))
+Set-Content outputs/performance-mvp.html $html -Encoding utf8 -NoNewline
 Copy-Item performance/dist/* outputs/ -Force
 Compress-Archive -Path performance/dist/* -DestinationPath outputs/performance-mvp.zip -Force

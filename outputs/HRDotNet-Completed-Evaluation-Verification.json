@@ -1,0 +1,154 @@
+[
+  {
+    "behaviorRows": 4,
+    "calculation": "(4.5050 × 60%) + (4.0000 × 40%) = 4.30 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 684,
+    "goalNames": [
+      "Timely Completion of Design Deliverables",
+      "Accurate Design Documentation",
+      "Developer Handoff Completion"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.30 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.00 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Maria Cruz · Mid-Year Performance Review"
+  },
+  {
+    "behaviorRows": 4,
+    "calculation": "(4.5050 × 60%) + (4.0000 × 40%) = 4.30 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 692,
+    "goalNames": [
+      "Campaign Delivery",
+      "Marketing Lead Generation",
+      "Campaign Reporting"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.30 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.00 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Sofia Garcia · Mid-Year Performance Review"
+  },
+  {
+    "behaviorRows": 1,
+    "calculation": "(4.5050 × 60%) + (4.5000 × 40%) = 4.50 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 261,
+    "goalNames": [
+      "Campaign Delivery",
+      "Marketing Lead Generation",
+      "Campaign Reporting"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.50 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.50 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Sofia Garcia · Collaboration Check-in — October 2026"
+  },
+  {
+    "behaviorRows": 7,
+    "calculation": "(4.5050 × 60%) + (4.0000 × 40%) = 4.30 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 1969,
+    "goalNames": [
+      "Timely Completion of Design Deliverables",
+      "Accurate Design Documentation",
+      "Developer Handoff Completion"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.30 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.00 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Maria Cruz · Mid-Year 360° Feedback"
+  },
+  {
+    "behaviorRows": 5,
+    "calculation": "(4.5050 × 60%) + (4.2000 × 40%) = 4.38 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 589,
+    "goalNames": [
+      "Timely Completion of Design Deliverables",
+      "Accurate Design Documentation",
+      "Developer Handoff Completion"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.38 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.20 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Maria Cruz · Historical Design Evaluation 2026"
+  },
+  {
+    "behaviorRows": 5,
+    "calculation": "(4.5050 × 60%) + (4.0667 × 40%) = 4.33 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 988,
+    "goalNames": [
+      "Timely Completion of Design Deliverables",
+      "Accurate Design Documentation",
+      "Developer Handoff Completion"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.33 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.07 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Maria Cruz · Annual Performance Review 2026"
+  },
+  {
+    "behaviorRows": 5,
+    "calculation": "(4.5050 × 60%) + (4.2000 × 40%) = 4.38 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 979,
+    "goalNames": [
+      "Sprint Deliverable Completion",
+      "Code Quality Compliance",
+      "Timely Resolution of Assigned Bugs"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.38 / 5",
+    "scores": [
+      "4.51 / 5",
+      "4.20 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "James Santos · Annual Performance Review 2026"
+  },
+  {
+    "behaviorRows": 5,
+    "calculation": "(4.5050 × 60%) + (3.8000 × 40%) = 4.22 / 5Calculation uses unrounded component scores. Displayed values are rounded to two decimal places.",
+    "feedback": 1017,
+    "goalNames": [
+      "Campaign Delivery",
+      "Marketing Lead Generation",
+      "Campaign Reporting"
+    ],
+    "goalRows": 3,
+    "missing": false,
+    "overall": "4.22 / 5",
+    "scores": [
+      "4.51 / 5",
+      "3.80 / 5"
+    ],
+    "title": "Employee Evaluation Results",
+    "evaluation": "Sofia Garcia · Annual Performance Review 2026"
+  }
+]
