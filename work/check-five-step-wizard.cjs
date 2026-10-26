@@ -19,7 +19,7 @@ for(const oldStep of [1,2,3,4,5,6]){
 run("UR.draftCycle=null;urStartWizard(null,true)");assert.equal(run('urWizard.setupVersion'),3);assert(run('urWizard.behavioralTemplate'));assert.equal(run('urStep'),1);
 run('cwGoStep(2)');assert.equal(run('urStep'),1);assert(run('cwErrors.some(e=>e.field==="cw-name")'));
 run("cwSet('name','Five-step QA');cwGoStep(2)");assert.equal(run('urStep'),2);
-const participants=run('cwParticipants(urWizard)');assert(!participants.includes('Goal Readiness'));assert(!participants.includes('Goals Template'));assert(participants.includes('cw-participant-table'));
+const participants=run('cwParticipants(urWizard)');assert(!participants.includes('Goal Readiness'));assert(!participants.includes('KPI Goal Template'));assert(participants.includes('cw-participant-table'));
 run('cwGoStep(3)');assert.equal(run('urStep'),2);assert(run('cwErrors.some(e=>e.field==="cw-participants")'));
 for(const id of ['EMP-001','EMP-002','EMP-003'])run(`cwToggleParticipant('${id}',true)`);
 run('cwGoStep(3)');assert.equal(run('urStep'),3);

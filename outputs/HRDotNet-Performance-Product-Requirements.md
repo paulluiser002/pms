@@ -4,7 +4,7 @@ Version 2.1 | Revision date 22 October 2026 | Product baseline for HR review
 
 Audience: HR stakeholders, product owners, designers, engineers, and quality assurance.
 
-HRDotNet Performance connects employee goals, sequential assessments, and documented performance outcomes in one workspace. This specification defines the current intended MVP, including position-specific Goals Templates, reusable Behavioral Templates, actual employee goal assignments, manager verification, and consolidated evaluation results. HR must confirm the policy decisions in Section 15 before production rollout.
+HRDotNet Performance connects employee goals, sequential assessments, and documented performance outcomes in one workspace. This specification defines the current intended MVP, including position-specific KPI Goal Templates, reusable Behavioral Assessment Templates, actual employee goal assignments, manager verification, and consolidated evaluation results. HR must confirm the policy decisions in Section 15 before production rollout.
 
 ## 1 Document Overview
 
@@ -14,7 +14,7 @@ The product supports HR Administrator, Manager, and Employee users. It helps HR 
 
 ### Scope and delivery boundary
 
-The MVP covers Dashboard, Goals, Reviews, Goals Templates, Behavioral Templates, Review Cycles, 202 Files, Reports, and the HRDotNet employee directory. It includes standard and 360-degree feedback, draft preservation, sequential stages, release controls, search, filtering, and numbered pagination. One application shell and design system serve all three roles.
+The MVP covers Dashboard, Goals, Reviews, KPI Goal Templates, Behavioral Assessment Templates, Review Cycles, 202 Files, Reports, and the HRDotNet employee directory. It includes standard and 360-degree feedback, draft preservation, sequential stages, release controls, search, filtering, and numbered pagination. One application shell and design system serve all three roles.
 
 The current deliverable is a local HTML interaction prototype with sample data and browser storage. Its role preview and HRDotNet records demonstrate the intended product; they do not provide production authentication, server authorization, live HR integration, durable multiuser storage, or a complete audit service. Production requirements in this document remain implementation obligations where those services are absent.
 
@@ -89,13 +89,13 @@ Authorized milestone completion controls update the parent progress; users witho
 
 ### Reviews
 
-One expandable Reviews sidebar parent contains All Reviews and, for HR only, Templates and Cycles. Templates expands into Goals Templates and Behavioral Templates. These are separate pages; there are no horizontal tabs switching between Reviews, Templates, and Cycles. The Reviews listing retains All Reviews, My Reviews, Completed, and the Manager's Team Reviews scope where available.
+One expandable Reviews sidebar parent contains All Reviews and, for HR only, Templates and Cycles. Templates expands into KPI Goal Templates and Behavioral Assessment Templates. These are separate pages; there are no horizontal tabs switching between Reviews, Templates, and Cycles. The Reviews listing retains All Reviews, My Reviews, Completed, and the Manager's Team Reviews scope where available.
 
 Rows represent individual evaluator assignments. Completed rows open the associated Employee Evaluation Results when result access is allowed. Other rows open assessment details or the existing restricted-response explanation. Results remain reachable through the normal listing; no standalone Completed Employee Evaluations shortcut card is displayed. Search and cycle/type/department/status filters compose with the selected scope.
 
 ### Templates
 
-Both categories provide All Templates, Draft, and Published listing tabs, defaulting to All Templates on initial load. Goals Templates show name/version, applicable position, indicator count, status, and updated date. Behavioral Templates retain description, review type, question count, version, updated date, and status. Search applies within the selected category and tab; Behavioral Review Type filtering remains available.
+Both categories provide All Templates, Draft, and Published listing tabs, defaulting to All Templates on initial load. KPI Goal Templates show name/version, applicable position, indicator count, status, and updated date. Behavioral Assessment Templates retain description, review type, question count, version, updated date, and status. Search applies within the selected category and tab; Behavioral Review Type filtering remains available.
 
 All Templates includes Archived records. Its Status filter preserves Archived discoverability. Draft and Published tabs omit the redundant Status filter. A Draft row opens the existing editor; a Published row opens details or preview. Tab changes never change publication state and reset the relevant pagination to page 1.
 
@@ -121,13 +121,13 @@ Employees is the HR workspace for the existing HRDotNet directory and performanc
 
 The shell uses the supplied HRDotNet Performance artwork, fixed navigation/header, company switcher, notifications, settings, and profile dropdown. Company selection uses actual available records rather than fabricated sister companies. There are no breadcrumbs. Page titles, supporting descriptions, primary actions, consistent chevrons, blue focus states, and unobtrusive Back controls preserve the existing design system.
 
-## 5 Goals and Goals Templates Requirements
+## 5 Goals and KPI Goal Templates Requirements
 
 ### Record relationships
 
-A Goals Template defines reusable position-specific indicators, units, target defaults, achievement direction, indicator weights, and scoring criteria. It is not an employee's live goal and has no employee progress. An assigned employee goal is a real operational record with an owner, deadline, progress, milestones, actual outcomes, and verification history. The Goals module is the workspace for those records.
+A KPI Goal Template defines reusable position-specific indicators, units, target defaults, achievement direction, indicator weights, and scoring criteria. It is not an employee's live goal and has no employee progress. An assigned employee goal is a real operational record with an owner, deadline, progress, milestones, actual outcomes, and verification history. The Goals module is the workspace for those records.
 
-Evaluation Setup in a Review Cycle links each participant to a compatible published Goals Template and maps its required indicators to actual assigned goals. Each link retains the goal ID, indicator ID, employee-specific target, unit, direction, weight, score criteria, and verification requirement. One cycle may contain multiple positions and multiple Goals Templates. Position matching must use the existing employee position; one template must not be applied to every employee merely because they share a cycle.
+Evaluation Setup in a Review Cycle links each participant to a compatible published KPI Goal Template and maps its required indicators to actual assigned goals. Each link retains the goal ID, indicator ID, employee-specific target, unit, direction, weight, score criteria, and verification requirement. One cycle may contain multiple positions and multiple KPI Goal Templates. Position matching must use the existing employee position; one template must not be applied to every employee merely because they share a cycle.
 
 The assignment dialog in Evaluation Setup can reuse an eligible existing goal or create a real assigned goal from an indicator. Existing goals must belong to the selected employee, be assigned rather than personal, and overlap the evaluation period. One employee's same goal cannot be mapped twice. Assignment saves actual goal records and links before launch. Launch snapshots configuration and generates assessments; it must not duplicate goals already assigned.
 
@@ -145,13 +145,13 @@ Progress describes work completion, not an approved evaluation rating. A goal at
 
 Verification is cycle-specific and records actor, time, reason, and a signature of the relevant goal evidence. Changes to that evidence invalidate the old approval and display Changed — verify again. Managerial submission and HR finalization must reject goals with missing, returned, stale, or otherwise unverified outcomes. A returned goal allows the employee to correct permitted progress and evidence before re-verification.
 
-## 6 Behavioral Templates Requirements
+## 6 Behavioral Assessment Templates Requirements
 
 HR maintains reusable forms with a name, description, review type, category, version, and ordered questions. Questions support rating-scale and written responses, plus existing choice controls where configured. Rating questions retain labels, required flags, optional comments, and Not Observed support. Written questions collect strengths, improvement areas, recommendations, or other configured feedback and do not contribute numerical scores.
 
-Drafts can be saved without satisfying every publication rule. Publishing validates required template information and question configuration. Only Published, position-compatible Behavioral Templates are eligible for new cycle configuration. Archived records remain discoverable but cannot be newly selected. Editing a published form creates the existing versioned draft workflow; launched assignments retain the question snapshot used at launch.
+Drafts can be saved without satisfying every publication rule. Publishing validates required template information and question configuration. Only Published, position-compatible Behavioral Assessment Templates are eligible for new cycle configuration. Archived records remain discoverable but cannot be newly selected. Editing a published form creates the existing versioned draft workflow; launched assignments retain the question snapshot used at launch.
 
-Evaluation Setup chooses a default Behavioral Template and optional explicit mappings by position. The cycle resolves a compatible published template for every participant. Each assessment stage collects that evaluator's own response against the resolved snapshot. Preview allows HR to inspect the form before use. Goals indicators remain in Goals Templates and are not merged into the Behavioral listing or question builder.
+Evaluation Setup chooses a default Behavioral Assessment Template and optional explicit mappings by position. The cycle resolves a compatible published template for every participant. Each assessment stage collects that evaluator's own response against the resolved snapshot. Preview allows HR to inspect the form before use. Goals indicators remain in KPI Goal Templates and are not merged into the Behavioral listing or question builder.
 
 ## 7 Review Cycle Creation
 
@@ -171,21 +171,21 @@ Validate nonblank name, supported type, real calendar dates, and evaluation peri
 
 Purpose: exclusively select the employees included in the cycle. Keep Employee search, Department and Position filters, the employee selection table, checkboxes, selected count, and functional numbered pagination. Require at least one unique employee within HR's authorized company scope. Selections persist across filters and pages. Save as Draft, Back, and Continue remain available.
 
-Do not display Goals Templates, assigned-goal counts, goal readiness, or goal configuration actions here. This step depends on the cycle identity and period from Step 1, but unresolved goals do not prevent selecting participants or proceeding to Evaluation Setup. The next step resolves goal readiness for the selected employees.
+Do not display KPI Goal Templates, assigned-goal counts, goal readiness, or goal configuration actions here. This step depends on the cycle identity and period from Step 1, but unresolved goals do not prevent selecting participants or proceeding to Evaluation Setup. The next step resolves goal readiness for the selected employees.
 
 ### Step 3 Evaluation Setup
 
 Purpose: review the actual goals included in the evaluation and select the reusable behavioral assessment. Goals Performance and Behavioral Performance are both standard required MVP components. Use two full-width, vertically stacked sections with normal section spacing. Do not display component toggles, percentage weighting inputs, scoring-policy dropdowns, or technical scoring configuration text.
 
-Goals Performance uses the description Review the assigned goals that will be included in this evaluation. Its table columns are Employee, Applicable Goals Template, Assigned Goals, and Action. Show employee name and position, the applicable published position-specific template and version, and the number of eligible actual assigned goal records linked from Goals. The count is not the number of template indicators alone. Maria, James, and Sofia each have three linked assigned goals in the sample cycle.
+Goals Performance uses the description Review the assigned goals that will be included in this evaluation. Its table columns are Employee, Applicable KPI Goal Template, Assigned Goals, and Action. Show employee name and position, the applicable published position-specific template and version, and the number of eligible actual assigned goal records linked from Goals. The count is not the number of template indicators alone. Maria, James, and Sofia each have three linked assigned goals in the sample cycle.
 
 Review Goals opens an inspection modal with the actual goal names, configured targets, progress, and deadlines. Back to Evaluation Setup or closing the modal preserves the current step and all wizard fields. The existing assignment dialog remains available through Manage Goal Assignment. If there are no eligible linked goals, show No goals assigned and Assign Goals. Assignment can reuse existing employee goals or create actual assigned goals from an eligible template. Preserve existing progress and avoid duplicate mappings. The existing dialog validates employee scope, compatible published template, finite nonnegative targets, required deadlines within the evaluation period, unique mappings, complete indicators, and indicator weights totaling 100%.
 
 Show a compact readiness summary, for example 3 of 3 participants ready. Readiness requires valid employee ownership, published position-compatible template, actual linked goals in the period, all required indicators mapped, valid target/score criteria, and complete weights. Missing or stale mappings block valid forward progression and launch and point to Step 3. Saving an incomplete draft remains available. Assignment saves actual Goals module records and the draft mapping; launch does not create duplicate goals.
 
-Behavioral Performance uses the description Select the behavioral template used to assess workplace behaviors. Provide one required Behavioral Template dropdown, selected version, question count, and Preview Template. New setup defaults to a published reusable template; saved explicit selections remain until HR changes them or resolves validation. If no suitable published template exists, show an empty selection and block launch until resolved. An optional collapsed Customize by Position section retains explicit position mappings. Every participant must resolve to a compatible published template through the default or override. Preview closes back to the same setup context without saving preview responses. Do not repeat template selectors for every assessment stage or repeat the full employee table in this section.
+Behavioral Performance uses the description Select the Behavioral Assessment Template used to assess workplace behaviors. Provide one required Behavioral Assessment Template dropdown, selected version, question count, and Preview Template. New setup defaults to a published reusable template; saved explicit selections remain until HR changes them or resolves validation. If no suitable published template exists, show an empty selection and block launch until resolved. An optional collapsed Customize by Position section retains explicit position mappings. Every participant must resolve to a compatible published template through the default or override. Preview closes back to the same setup context without saving preview responses. Do not repeat template selectors for every assessment stage or repeat the full employee table in this section.
 
-Internally, new and migrated draft setups use manager-verified goal criteria and average eligible observed numerical behavioral responses. Both dimension ratings use the five-point scale. Overall Performance Rating = (Goals Performance Rating + Behavioral Performance Rating) / 2. This proposed fixed equal-contribution default is pending HR confirmation and is not a permanent approved company scoring policy. Preserve the criteria and five-point conversion of Goals Templates; simplifying the wizard does not replace verified goal evidence with progress percentages.
+Internally, new and migrated draft setups use manager-verified goal criteria and average eligible observed numerical behavioral responses. Both dimension ratings use the five-point scale. Overall Performance Rating = (Goals Performance Rating + Behavioral Performance Rating) / 2. This proposed fixed equal-contribution default is pending HR confirmation and is not a permanent approved company scoring policy. Preserve the criteria and five-point conversion of KPI Goal Templates; simplifying the wizard does not replace verified goal evidence with progress percentages.
 
 ### Step 4 Assessment Workflow
 
@@ -199,7 +199,7 @@ HR can Save as Draft, go Back, or Continue. Only the first eligible assessment o
 
 ### Step 5 Review and Launch
 
-Purpose: confirm a concise summary before creating evaluator work. Show cycle name/type and evaluation period, assessment start, selected participants and assigned-goal readiness, default Behavioral Template/version/count and any explicit position overrides, assessment sequence, employee-to-evaluator mappings, individual deadlines, and manual HR result-release configuration. This step introduces no additional configuration fields or weighting choices.
+Purpose: confirm a concise summary before creating evaluator work. Show cycle name/type and evaluation period, assessment start, selected participants and assigned-goal readiness, default Behavioral Assessment Template/version/count and any explicit position overrides, assessment sequence, employee-to-evaluator mappings, individual deadlines, and manual HR result-release configuration. This step introduces no additional configuration fields or weighting choices.
 
 Run whole-cycle validation and display actionable errors linking to the correct step and field. Reject missing required information, out-of-scope employees, missing or incompatible templates, incomplete/duplicate goal mappings, invalid targets or indicator criteria, missing verification stage, unauthorized evaluators, invalid deadline order, and a final deadline already past. Missing goals route to Evaluation Setup, not participant selection. Save as Draft remains available; launch is disabled until blocking issues are resolved.
 
@@ -300,7 +300,7 @@ Assessment Summary can display a submitted stage even after its parent cycle is 
 
 ## 13 Sample Data and Demonstration Scenarios
 
-The preserved Annual Performance Review 2026 example includes Maria Cruz, James Santos, and Sofia Garcia in one cycle, using their respective published position-specific Goals Templates. Each employee has three linked assigned goals. Reuse actual goal IDs where appropriate rather than duplicating them at launch. Separate completed and historical cycles retain their original evaluation periods and frozen result evidence.
+The preserved Annual Performance Review 2026 example includes Maria Cruz, James Santos, and Sofia Garcia in one cycle, using their respective published position-specific KPI Goal Templates. Each employee has three linked assigned goals. Reuse actual goal IDs where appropriate rather than duplicating them at launch. Separate completed and historical cycles retain their original evaluation periods and frozen result evidence.
 
 | Employee | Position | Example assigned goals |
 | --- | --- | --- |
@@ -348,7 +348,7 @@ FR-TPL-003 — Validate publishable criteria and preserve snapshots. Goal indica
 
 FR-CYCLE-001 — Provide all five wizard stages in order, with Select Participants limited to employee selection and all goal readiness in Evaluation Setup. An incomplete draft can be saved and resumed; an invalid launch shows linked step/field errors. Future assessment start schedules rather than immediately opens the cycle.
 
-FR-CYCLE-002 — Support mixed-position participants with compatible published Goals Templates. Maria, James, and Sofia can share one cycle with three different template mappings. Missing goals, incompatible position, duplicate mapping, and unauthorized employees block valid launch and link to Step 3 for goal corrections.
+FR-CYCLE-002 — Support mixed-position participants with compatible published KPI Goal Templates. Maria, James, and Sofia can share one cycle with three different template mappings. Missing goals, incompatible position, duplicate mapping, and unauthorized employees block valid launch and link to Step 3 for goal corrections.
 
 FR-CYCLE-003 — Link actual goals before launch and retain their progress. Reusing the sample mappings must not increase the number of existing goals during launch. Creating a new assigned goal through the dialog must make it visible in Goals.
 

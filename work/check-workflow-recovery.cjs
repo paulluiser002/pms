@@ -1,0 +1,37 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert');
+const nodes={};const node=key=>nodes[key]??={innerHTML:'',textContent:'',value:'',style:{},attributes:{},addEventListener(){},setAttribute(k,v){this.attributes[k]=v},showModal(){},close(){},focus(){},scrollIntoView(){},setSelectionRange(){},querySelectorAll(){return []},reportValidity(){return true},insertAdjacentHTML(){},prepend(){}};
+let fields={};const context={console,document:{querySelector:node,querySelectorAll(){return []},getElementById:node,addEventListener(){}},localStorage:{getItem(){return null},setItem(){}},structuredClone,Date,Math,URL,Blob,setTimeout(){},confirm(){return true},location:{reload(){}},addEventListener(){},scrollTo(){},FormData:class{get(k){return fields[k]??null}getAll(k){return []}}};context.window=context;vm.createContext(context);const run=x=>vm.runInContext(x,context);
+for(const file of ['app.js','views.js','reviews.js','revisions.js','tables.js','dashboard.js'])run(fs.readFileSync('performance/dist/'+file,'utf8'));
+const shell=fs.readFileSync('performance/dist/shell.js','utf8');run(shell.slice(shell.indexOf('/* Structured goal creation')));run('render=()=>{};pmsAccessiblePages=()=>[];pmsSidebarQuery="";pmsChevron=()=>"";pmsSplitPageHeader=()=>{}');
+for(const file of ['evaluations.js','cycle-workflow.js']){run(fs.readFileSync('performance/dist/'+file,'utf8').replace(/render\(\);\s*$/,''));run('render=()=>{};closeModal=()=>{}')}
+
+for(const file of ['evaluation-results.js','position-goals.js']){run(fs.readFileSync('performance/dist/'+file,'utf8'));run('render=()=>{};closeModal=()=>{}')}
+
+let failures=0;
+function test(name,fn){try{fn();console.log('PASS:',name)}catch(e){failures++;console.error('FAIL:',name,e.message)}}
+run("var fixture=urClone(urCycle('position-accomplishments-2026'));fixture.id='recovery-test';UR.cycles.push(fixture);fixture.performanceRecords=urClone(fixture.performanceRecords);var record=fixture.performanceRecords['EMP-003'];fixture.accomplishmentDeadline='2026-10-18';fixture.verificationDeadline='2026-10-21';record.state='Returned';viewRole='Employee'");
+test('Returned accomplishments remain editable through verification deadline',()=>assert(run('pgCanEdit(fixture,record)')));
+run("viewRole='HR Administrator';fixture.start='2026-10-01';fixture.periodEnd='2026-10-01'");
+test('Expired accomplishment deadline prevents launch',()=>assert(run('cwLaunchErrors(fixture).some(e=>e.field==="cw-accomplishmentDeadline")')));
+run("var correctionCycle=urClone(urCycle('cw-design-2026'));correctionCycle.id='correction-test';correctionCycle.status='Active';correctionCycle.released=false;UR.cycles.push(correctionCycle);cwGenerate(correctionCycle);var cr=urCycleAssignments(correctionCycle);cr.forEach(a=>{a.state='Submitted';a.answers={kept:'4'};a.submitted='2026-10-18'});var first=cr[0]");
+test('HR correction reopens all affected submissions and preserves original evidence',()=>{run("pdConfirmReopen(first.id,'Incorrect evidence')");assert.equal(run('first.state'),'In Progress');assert(run('cr.every(a=>a.state!=="Submitted"&&!a.submitted)'));assert.equal(run('first.responseHistory[0].answers.kept'),'4');assert(!run('pdUnlocked(cr[1])'))});
+test('Correction cannot mutate finalized cycles',()=>{run("correctionCycle.status='Completed';cr.forEach(a=>a.state='Completed');pdConfirmReopen(first.id,'Attempt')");assert(run('cr.every(a=>a.state==="Completed")'))});
+test('HR can extend active cycle dates and assignment deadlines',()=>{run("fixture.accomplishmentDeadline='2026-10-18';fixture.verificationDeadline='2026-10-21';cwGenerate(fixture)");fields={accomplishment:'2026-10-24',verification:'2026-10-30',reason:'Allow employee corrections'};const deadlines=['2026-11-07','2026-11-12','2026-11-16'];run('fixture.stages').forEach((s,i)=>fields['stage-'+s.id]=deadlines[i]);run('pgSaveSchedule(fixture.id,{})');assert.equal(run('fixture.accomplishmentDeadline'),'2026-10-24');assert.equal(run('urCycleAssignments(fixture)[0].deadline'),'2026-11-07');assert.equal(run('fixture.scheduleHistory.length'),1)});
+test('Schedule extension rejects shortening and missing reason',()=>{const before=run('fixture.accomplishmentDeadline');fields={accomplishment:'2026-10-01',verification:'2026-10-30',reason:''};run('pgSaveSchedule(fixture.id,{})');assert.equal(run('fixture.accomplishmentDeadline'),before)});
+run("var scoringCycle={id:'score-test',workflowVersion:2,components:{behavioral:true},scoring:{behavioral:'average'},anonymousPeer:true,anonymousUpward:true,threshold:2,stages:[{id:'self',type:'Self',name:'Self'},{id:'p1',type:'Peer',name:'Peer 1'},{id:'p2',type:'Peer',name:'Peer 2'}],participants:['EMP-003']};UR.cycles.push(scoringCycle);for(const [i,type] of ['Self','Peer','Peer'].entries())UR.assignments.push({id:'score-'+i,cycle:scoringCycle.id,subject:'EMP-003',reviewer:['EMP-003','EMP-001','EMP-002'][i],stage:scoringCycle.stages[i].id,type,state:'Submitted',template:{questions:[{id:'rating',type:'Rating'}]},answers:{rating:i?'5':'2'}})");
+test('Anonymous perspective meeting threshold contributes to behavioral score',()=>assert.equal(run("cwBehaviorScore(scoringCycle,'EMP-003')"),4));
+test('Result groups pool anonymous perspective consistently with scoring',()=>assert.equal(run("hrResultData(scoringCycle,'EMP-003').groups.filter(g=>g.anonymous&&!g.hidden).length"),1));
+test('Anonymous perspective below threshold is excluded',()=>{run("UR.assignments.find(a=>a.id==='score-2').state='In Progress'");assert.equal(run("cwBehaviorScore(scoringCycle,'EMP-003')"),2)});
+
+test('Returned correction closes after verification deadline',()=>{run("fixture.verificationDeadline='2026-10-18';viewRole='Employee';record.state='Returned'");assert(!run('pgCanEdit(fixture,record)'));run("fixture.verificationDeadline='2026-10-30'")});
+test('Employees cannot extend deadlines or reopen submitted assessments',()=>{run("viewRole='Employee';first.state='Submitted';correctionCycle.status='Active';pdConfirmReopen(first.id,'Not authorized')");assert.equal(run('first.state'),'Submitted');const before=run('fixture.accomplishmentDeadline');run('pgSaveSchedule(fixture.id,{})');assert.equal(run('fixture.accomplishmentDeadline'),before)});
+test('Corrected assessments can be submitted again in sequence and finalized',()=>{
+ run("viewRole='HR Administrator';var sequence=urCycleAssignments(fixture).filter(a=>a.subject==='EMP-003');sequence.forEach(a=>{a.state='Submitted';a.submitted=urToday});pdConfirmReopen(sequence[0].id,'Correct self assessment');record.state='Verified';fixture.participants=['EMP-003']");
+ for(const [i,role] of ['Employee','Manager','HR Administrator'].entries()){
+  run(`viewRole='${role}';urDetail=sequence[${i}].id;urAnswers=Object.fromEntries(sequence[${i}].template.questions.map(q=>[q.id,q.type==='Rating'?'4':q.type==='Choice'?q.options[0]:'Corrected response']));pdFeedback='Reconfirmed';urSubmitResponse()`);
+  assert.equal(run(`sequence[${i}].state`),'Submitted');
+ }
+ run("UR.assignments=UR.assignments.filter(a=>a.cycle!==fixture.id||a.subject==='EMP-003');urDoFinalize(fixture.id)");assert.equal(run('fixture.status'),'Completed');assert(!run('fixture.released'));run('urDoRelease(fixture.id)');assert(run('fixture.released'));
+ const snapshot=run("JSON.stringify(fixture.resultSnapshots['EMP-003'])");run("pgSaveSchedule(fixture.id,{});pdConfirmReopen(sequence[0].id,'Cannot change final results')");assert.equal(run("JSON.stringify(fixture.resultSnapshots['EMP-003'])"),snapshot);
+});
+process.exitCode=failures?1:0;

@@ -10,7 +10,7 @@ const templatesBefore=run('UR.templates.length');
 run("urEditor.name='Unsaved preview fixture';urEditor.questions[0].title='Communicates clearly';urDirty=true");
 const snapshot=run('JSON.stringify(urEditor)');
 assert(run('urBuilder()').includes('Publish Template'));assert(!run('urBuilder()').includes('urstickyfooter'));assert(!run('urBuilder()').includes('>Cancel<'));
-run('urPreviewBuilder()');assert(run('urBuilder()').includes('<h1>Template Preview</h1>'));assert(run('urBuilder()').includes('Back to Builder'));assert(!run('urBuilder()').includes('Publish Template'));assert(!run('urBuilder()').includes('Save as Draft'));
+run('urPreviewBuilder()');assert(run('urBuilder()').includes('<h1>Behavioral Assessment Template Preview</h1>'));assert(run('urBuilder()').includes('Back to Builder'));assert(!run('urBuilder()').includes('Publish Template'));assert(!run('urBuilder()').includes('Save as Draft'));
 run('urPreviewBuilder()');assert.equal(run('JSON.stringify(urEditor)'),snapshot);
 run("urGoTab('Templates')");assert.equal(run('urScreen'),'builder');assert(element('#modal').innerHTML.includes('Leave without saving'));
 run('urDirty=false;urPending()');assert.equal(run('urScreen'),'list');assert.equal(run('UR.templates.length'),templatesBefore);
@@ -30,7 +30,7 @@ run('urDrawCycles()');assert(element('#urCycleRows').innerHTML.includes('data-pm
 run('urDrawReviews()');assert(element('#urReviewRows').innerHTML.includes('data-pms-record="review"'));
 run('pmsDrawEmployeeRows()');assert(element('#pmsEmployeeRows').innerHTML.includes('data-pms-record="employee"'));
 run("viewProfile('EMP-001')");assert(element('#modal').innerHTML.includes('Reassign Manager'));
-run("urViewTemplate(UR.templates[0].id)");const detail=run('urBuilder()');for(const label of ['Template Details','Edit','Preview','Duplicate','Archive'])assert(detail.includes(label));
+run("urViewTemplate(UR.templates[0].id)");const detail=run('urBuilder()');for(const label of ['Behavioral Assessment Template Details','Edit','Preview','Duplicate','Archive'])assert(detail.includes(label));
 console.log('PASS: all main listings omit action columns; record rows carry details targets; template and employee details retain authorized actions.');
 
 run("viewRole='HR Administrator';pmsPageSize=10;pmsTablePages.qa=1");
