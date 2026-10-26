@@ -111,6 +111,18 @@ function pmsWorkflowPlay(){
  pmsWorkflowState.timer=setInterval(()=>{if(!document.getElementById('pmsWorkflowDialog')?.open){pmsWorkflowStop();return}pmsWorkflowState.index++;if(pmsWorkflowState.index>=pmsWorkflowCurrent().tour.length-1)pmsWorkflowStop();pmsWorkflowUpdate(true)},3600);
  pmsWorkflowUpdate(true);
 }
+function pmsWorkflowIcon(n){
+ const role=n[2],kind=n[6]==='decision'?'decision':n[6]==='branch'?'return':/System/.test(role)?'system':/Manager/.test(role)?'manager':/Employee|evaluator/i.test(role)?'employee':'hr';
+ const artwork={
+  hr:'<rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 5V3h6v2M8 11h8M8 15h4"/><path class="wf-icon-action" d="m13 17 2 2 4-5"/>',
+  employee:'<circle cx="10" cy="7" r="3"/><path d="M4 20v-3a6 6 0 0 1 9-5"/><path class="wf-icon-action" d="m14 16 5-5 2 2-5 5-3 1Z"/>',
+  manager:'<circle cx="8" cy="7" r="3"/><path d="M2 21v-3a6 6 0 0 1 10-4M16 4a3 3 0 0 1 0 6"/><path class="wf-icon-action" d="m14 17 2 2 5-6"/>',
+  system:'<g class="wf-icon-gear"><path d="m9 3 1-2h4l1 2 2 1 2-.3 2 3-1 2v2l1 2-2 3-2-.3-2 1-1 2h-4l-1-2-2-1-2 .3-2-3 1-2V9L3 7l2-3 2 .3Z"/><circle cx="12" cy="10" r="3"/></g><path d="m8 22 3 2 5-4" transform="translate(0 -1)"/>',
+  decision:'<path d="M12 21v-7M12 14 5 7M12 14l7-7"/><path class="wf-icon-action" d="M5 12V7h5M14 7h5v5"/>',
+  return:'<path d="M8 8h7a6 6 0 0 1 0 12h-3"/><path class="wf-icon-action" d="M8 3 3 8l5 5M3 8h5"/>'
+ };
+ return `<span class="wf-step-icon wf-icon-${kind}" aria-hidden="true"><svg viewBox="0 0 28 28"><circle class="wf-icon-progress" cx="14" cy="14" r="12" pathLength="100"/><g class="wf-icon-art" transform="translate(3 3) scale(.92)">${artwork[kind]}</g></svg></span>`;
+}
 function pmsWorkflowGraph(p){
  const height=Math.max(...p.nodes.map(n=>n[3]))*128+138,byId=new Map(p.nodes.map(n=>[n[0],n]));
  const point=n=>({x:n[6]==='branch'?342:30,y:n[3]*128+24});
@@ -119,9 +131,9 @@ function pmsWorkflowGraph(p){
   if(a.x===b.x){d=`M ${a.x+120} ${a.y+80} L ${b.x+120} ${b.y}`;lx=a.x+144;ly=a.y+103}
   else if(a.x<b.x){d=`M ${a.x+240} ${a.y+40} L ${b.x} ${b.y+40}`;lx=(a.x+240+b.x)/2;ly=a.y+26}
   else{const right=608;d=`M ${a.x+240} ${a.y+40} H ${right} V ${b.y-12} H ${b.x+120} V ${b.y}`;lx=right-8;ly=a.y+98}
-  return `<g class="wf-edge" data-from="${from}" data-to="${to}"><path d="${d}" marker-end="url(#wf-arrow)"/>${label?`<text x="${lx}" y="${ly}" text-anchor="${a.x>b.x?'end':'middle'}">${esc(label)}</text>`:''}</g>`;
+  return `<g class="wf-edge" data-from="${from}" data-to="${to}"><path d="${d}" marker-end="url(#wf-arrow)"/><circle class="wf-edge-token" r="3.5" style="offset-path:path('${d}')"/>${label?`<text x="${lx}" y="${ly}" text-anchor="${a.x>b.x?'end':'middle'}">${esc(label)}</text>`:''}</g>`;
  }).join('');
- return `<div class="wf-canvas" style="height:${height}px"><svg class="wf-connectors" viewBox="0 0 630 ${height}" width="630" height="${height}" aria-hidden="true"><defs><marker id="wf-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 1 1 L 7 4 L 1 7" fill="none" stroke="context-stroke" stroke-width="1.4"/></marker></defs>${paths}</svg>${p.nodes.map((n,i)=>{const pos=point(n);return `<button type="button" class="wf-node ${n[6]==='decision'?'wf-decision':''} ${n[6]==='branch'?'wf-branch':''}" style="left:${pos.x}px;top:${pos.y}px" data-node="${n[0]}" aria-controls="wf-step-detail" onclick="pmsWorkflowChoose('${n[0]}')"><span class="wf-node-role">${esc(n[2])}</span><strong>${esc(n[1])}</strong>${n[6]==='decision'?'<svg class="wf-decision-mark" viewBox="0 0 20 20" aria-hidden="true"><path d="m10 2 8 8-8 8-8-8Z"/></svg>':''}</button>`}).join('')}</div>`;
+ return `<div class="wf-canvas" style="height:${height}px"><svg class="wf-connectors" viewBox="0 0 630 ${height}" width="630" height="${height}" aria-hidden="true"><defs><marker id="wf-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M 1 1 L 7 4 L 1 7" fill="none" stroke="context-stroke" stroke-width="1.4"/></marker></defs>${paths}</svg>${p.nodes.map(n=>{const pos=point(n);return `<button type="button" class="wf-node ${n[6]==='decision'?'wf-decision':''} ${n[6]==='branch'?'wf-branch':''}" style="left:${pos.x}px;top:${pos.y}px" data-node="${n[0]}" aria-controls="wf-step-detail" onclick="pmsWorkflowChoose('${n[0]}')">${pmsWorkflowIcon(n)}<span class="wf-node-copy"><span class="wf-node-role">${esc(n[2])}</span><strong>${esc(n[1])}</strong></span></button>`}).join('')}</div>`;
 }
 function pmsWorkflowRender(){
  const p=pmsWorkflowCurrent();
@@ -131,8 +143,9 @@ function pmsWorkflowRender(){
 function pmsWorkflowUpdate(scroll=false){
  const p=pmsWorkflowCurrent(),id=p.tour[pmsWorkflowState.index],n=p.nodes.find(x=>x[0]===id),running=pmsWorkflowState.timer!==null,visited=new Set(p.tour.slice(0,pmsWorkflowState.index));
  document.querySelectorAll('#pmsWorkflowDialog .wf-node').forEach(el=>{const active=el.dataset.node===id;el.classList.toggle('wf-active',active);el.classList.toggle('wf-visited',visited.has(el.dataset.node));el.setAttribute('aria-pressed',String(active))});
- document.querySelectorAll('#pmsWorkflowDialog .wf-edge').forEach(el=>el.classList.toggle('wf-edge-active',el.dataset.to===id));
- document.getElementById('wf-step-content').innerHTML=`<span class="wf-role">${esc(n[2])}</span><h3>${esc(n[1])}</h3><p>${esc(n[4])}</p><h4>Rules & conditions</h4><p>${esc(n[5])}</p>`;
+ const previous=p.tour[pmsWorkflowState.index-1];
+ document.querySelectorAll('#pmsWorkflowDialog .wf-edge').forEach(el=>el.classList.toggle('wf-edge-active',el.dataset.to===id&&el.dataset.from===previous));
+ document.getElementById('wf-step-content').innerHTML=`<div class="wf-detail-identity">${pmsWorkflowIcon(n)}<span class="wf-role">${esc(n[2])}</span></div><h3>${esc(n[1])}</h3><p>${esc(n[4])}</p><h4>Rules & conditions</h4><p>${esc(n[5])}</p>`;
  document.getElementById('wf-play').textContent=running?'Pause walkthrough':pmsWorkflowState.index===p.tour.length-1?'Replay walkthrough':'Play walkthrough';
  document.getElementById('wf-play').setAttribute('aria-pressed',String(running));
  document.getElementById('wf-previous').disabled=pmsWorkflowState.index===0;document.getElementById('wf-next').disabled=pmsWorkflowState.index===p.tour.length-1;
@@ -140,3 +153,4 @@ function pmsWorkflowUpdate(scroll=false){
  document.getElementById('pmsWorkflowDialog').classList.toggle('wf-playing',running);
  if(scroll){const chart=document.querySelector('#pmsWorkflowDialog .wf-chart'),active=document.querySelector('#pmsWorkflowDialog .wf-active');chart.scrollTo({top:Math.max(0,active.offsetTop-chart.clientHeight/2+40),left:Math.max(0,active.offsetLeft-chart.clientWidth/2+120),behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
 }
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&pmsWorkflowState.timer!==null){pmsWorkflowStop();if(document.getElementById('pmsWorkflowDialog')?.open)pmsWorkflowUpdate()}});

@@ -1,5 +1,5 @@
 const fs=require('fs'),vm=require('vm'),assert=require('assert');
-const context=vm.createContext({});
+const context=vm.createContext({document:{addEventListener(){}}});
 vm.runInContext(fs.readFileSync('performance/dist/workflow-guide.js','utf8'),context);
 const flows=vm.runInContext('pmsWorkflowProcesses',context);
 assert.equal(new Set(flows.map(p=>p.id)).size,flows.length,'Process IDs must be unique');
@@ -7,6 +7,7 @@ for(const p of flows){
  const ids=new Set(p.nodes.map(n=>n[0]));
  assert.equal(ids.size,p.nodes.length,`${p.id}: duplicate step`);
  assert(p.nodes.every(n=>n[1]&&n[2]&&n[4]&&n[5]),`${p.id}: incomplete step guidance`);
+ for(const n of p.nodes)assert(vm.runInContext('pmsWorkflowIcon',context)(n).includes('aria-hidden="true"'),`${p.id}: missing decorative step icon`);
  const positions=p.nodes.map(n=>`${n[3]}:${n[6]==='branch'}`);
  assert.equal(new Set(positions).size,positions.length,`${p.id}: overlapping steps`);
  for(const [from,to] of p.edges)assert(ids.has(from)&&ids.has(to),`${p.id}: dangling connector`);
